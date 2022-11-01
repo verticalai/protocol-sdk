@@ -1,51 +1,82 @@
-# Thred App Developer SDK
+# Thred Protocol SDK
 
-Thred is a decentralized App Store Protocol. Using Thred, developers can create installable web3 applications and list them for sale on the Thred App Store. This SDK provides all the functions needed to create web3 applications. 
+Thred is a decentralized App Store Protocol. Using Thred, developers can create installable web3 applications and list them for sale on App Store Clients. This SDK provides all the functions needed to create standalone App Stores with the Thred Protocol. 
 
 
 ## Installation
 
-Use the package manager [npm](https://www.npmjs.com/) to install the Thred App Developer SDK.
+Use the package manager [npm](https://www.npmjs.com/) to install the Thred Protocol SDK.
 
 ```bash
-npm install thred-app-sdk
+npm install thred-protocol-sdk
 ```
 
 ### Import Module
 
 ```typescript
-import * as thredSDK from "thred-app-sdk"
+import * as protocolSDK from "thred-protocol-sdk"
 
 // import the module 2 different ways
 
-const thredSDK = require("thred-app-sdk")
+const protocolSDK = require("thred-protocol-sdk")
 ```
 
-### Initialize the SDK
+### App Transaction Listener
 
 ```typescript
-const appKey = "..."
+//Listen for transactions sent from the currently active app
 
-thredSDK.initApp(appKey) //Establish a secure connection to the App Store with the App Key passed in the URL. 
+const sessionKey = "..." //Unique session key for the active app instance
+
+protocolSDK.setAppListener(sessionKey, (data) => {
+
+     //Handle transaction sent from the app
+     //This is where you call the Smart Contract with the connected wallet
+}) 
 ```
-### Call Smart Contract function
+### Handling an App Transaction Request
 
-Instead of natively handling the connection to the user's wallet, use the below method to call the Smart Contract with the existing wallet connected to an App Store Client.
+Call the Smart Contract with the wallet connected to your App Store Client.
 
 ```typescript
-const address = '0x.....293' // Address of the contract
-const abi = [ [ { "anonymous": false, "inputs": [] } ] .... ] // ABI of the contract
+const ethers = require("ethers")
 
-const data = {
-     address,
-     abi
-}
+const sessionKey = "..." //Unique session key for the active app instance
 
-thredSDK.sendTransaction(data, "mySolidityFunction", [param1, param2, param3], (transaction) => {
+protocolSDK.setAppListener(sessionKey, async (data) => {
 
-     //Returns the transaction information in the form of an ethers.js Transaction
+     //Contract Details
+     const contractData = data.contract
+     const address = contractData.address
+     const abi = contractData.abi
 
-})
+     //Function Details
+     const name = data.name
+     const params = data.params
+     const value = data.value
+     const waitMode = data.waitMode
+
+     //Get Connected Signer
+     let provider = ... // retrieve connected ethers provider
+     let signer = provider.getSigner() //retrieve signer
+
+     //Use ethers.js to call the function on the contract with the current provider.
+     let contract = new ethers.Contract(address, abi, signer);
+     let transaction = await contract[name](...params, {
+          value
+     })
+
+     //Check wait mode passed by the app
+     if (waitMode == "wait" || waitMode == "wait_update"){
+          if (waitMode == "wait_update"){
+               protocolSDK.sendTransactionReceipt(transaction)
+          }
+          await transaction.wait()
+     }
+
+     protocolSDK.sendTransactionReceipt(transaction)
+
+}) 
 ```
 
 

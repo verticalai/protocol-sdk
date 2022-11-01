@@ -1,13 +1,7 @@
 {
-<<<<<<< HEAD
-  "name": "thred-app-sdk",
-  "version": "0.2.3",
-  "description": "Javascript SDK used to build apps for the Thred Protocol.",
-=======
   "name": "thred-protocol-sdk",
   "version": "0.2.0",
   "description": "Javascript SDK used to build App Stores for the Thred Protocol.",
->>>>>>> 2e53098 (INIT)
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
