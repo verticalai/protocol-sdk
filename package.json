@@ -1,0 +1,41 @@
+{
+<<<<<<< HEAD
+  "name": "thred-app-sdk",
+  "version": "0.2.3",
+  "description": "Javascript SDK used to build apps for the Thred Protocol.",
+=======
+  "name": "thred-protocol-sdk",
+  "version": "0.2.0",
+  "description": "Javascript SDK used to build App Stores for the Thred Protocol.",
+>>>>>>> 2e53098 (INIT)
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc"
+  },
+  "keywords": [
+    "thred",
+    "apps",
+    "protocol",
+    "blockchain",
+    "web3",
+    "javascript",
+    "typescript",
+    "solidity"
+  ],
+  "author": "Thred Apps",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "eslint": "^8.26.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.3.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "ethers": "^5.7.2"
+  }
+}
